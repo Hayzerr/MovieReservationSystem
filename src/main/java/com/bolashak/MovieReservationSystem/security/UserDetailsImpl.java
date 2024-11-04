@@ -63,7 +63,7 @@ public class UserDetailsImpl implements UserDetails {
         return new UserDetailsImpl(
                 user.getUsername(),
                 user.getPassword(),
-                !user.isDeleted(),
+                user.isActive(),
                 Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName().name())),
                 user.getRole()
         );

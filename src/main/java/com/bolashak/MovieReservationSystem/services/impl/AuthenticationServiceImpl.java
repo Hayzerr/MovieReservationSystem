@@ -59,11 +59,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new IllegalArgumentException("Role not found");
         }
 
-        User user = new User();
-        user.setUsername(registerRequest.getUsername());
+        User user = modelMapper.map(registerRequest, User.class);
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setEmail(registerRequest.getEmail());
-        user.setDeleted(false);
         user.setRole(roleOptional.get());
         log.info("User registered: {}", user);
         User registeredUser = userRepository.save(user);

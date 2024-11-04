@@ -4,6 +4,7 @@ import com.bolashak.MovieReservationSystem.config.LocalDateTimeAttributeConverte
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -18,6 +19,10 @@ public abstract class AbstractEntity<T extends Serializable> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     T id;
+
+    @Column(name = "is_active")
+    @ColumnDefault("true")
+    private boolean isActive;
 
     @Column(name = "created_at", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)

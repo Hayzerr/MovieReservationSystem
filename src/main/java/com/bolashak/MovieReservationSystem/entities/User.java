@@ -1,14 +1,17 @@
 package com.bolashak.MovieReservationSystem.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = false)
 @Entity
-@Data
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "movie_user")
 public class User extends AbstractEntity<Long>{
     @Column(nullable = false, unique = true)
@@ -20,13 +23,16 @@ public class User extends AbstractEntity<Long>{
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private boolean isDeleted;
-
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RefreshToken> refreshTokens;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Payment> payments;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Reservation> reservations;
 }

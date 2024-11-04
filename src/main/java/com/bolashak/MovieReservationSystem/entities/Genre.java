@@ -3,28 +3,22 @@ package com.bolashak.MovieReservationSystem.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "refresh_token")
-public class RefreshToken{
+@Table(name = "genre")
+public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String token;
+    private String name;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date expiryDate;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @OneToMany(mappedBy = "genre", fetch = FetchType.LAZY)
+    private List<Movie> movies;
 }
-
-
