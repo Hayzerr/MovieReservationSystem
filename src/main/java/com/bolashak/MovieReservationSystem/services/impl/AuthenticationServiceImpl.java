@@ -6,6 +6,7 @@ import com.bolashak.MovieReservationSystem.dto.UserResponse;
 import com.bolashak.MovieReservationSystem.entities.RefreshToken;
 import com.bolashak.MovieReservationSystem.entities.Role;
 import com.bolashak.MovieReservationSystem.entities.User;
+import com.bolashak.MovieReservationSystem.entities.enums.RoleEnum;
 import com.bolashak.MovieReservationSystem.repository.RefreshTokenRepository;
 import com.bolashak.MovieReservationSystem.repository.RoleRepository;
 import com.bolashak.MovieReservationSystem.repository.UserRepository;
@@ -52,7 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Transactional
     public UserResponse register(RegisterRequest registerRequest) {
-        Optional<Role> roleOptional = roleRepository.findByName(registerRequest.getRole());
+        Optional<Role> roleOptional = roleRepository.findByName(RoleEnum.USER);
 
         if(roleOptional.isEmpty()){
             throw new IllegalArgumentException("Role not found");
