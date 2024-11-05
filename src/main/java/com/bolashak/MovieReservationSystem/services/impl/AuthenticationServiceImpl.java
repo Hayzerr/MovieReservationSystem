@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -69,14 +70,18 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return userResponse;
     }
 
-    @Transactional
     public AuthenticationResponse login(String username, String password) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String accessToken = jwtUtil.generateToken(userDetails.getUsername(), ACCESS_TOKEN_VALIDITY);
-        String refreshTokenStr = jwtUtil.generateToken(userDetails.getUsername(), REFRESH_TOKEN_VALIDITY);
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(grantedAuthority -> grantedAuthority.getAuthority())
+                .toList();
+
+        String accessToken = jwtUtil.generateToken(userDetails.getUsername(), roles, ACCESS_TOKEN_VALIDITY);
+        String refreshTokenStr = jwtUtil.generateToken(userDetails.getUsername(), roles, REFRESH_TOKEN_VALIDITY);
 
         RefreshToken refreshToken = new RefreshToken();
         refreshToken.setToken(refreshTokenStr);
@@ -87,6 +92,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return new AuthenticationResponse(accessToken, refreshTokenStr);
     }
 
+
     @Transactional
     public AuthenticationResponse refreshAccessToken(String refreshToken) {
         RefreshToken token = refreshTokenRepository.findByToken(refreshToken)
@@ -96,12 +102,32 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             throw new RuntimeException("Refresh token expired");
         }
 
-        String newAccessToken = jwtUtil.generateToken(token.getUser().getUsername(), ACCESS_TOKEN_VALIDITY);
+        User user = token.getUser();
+        List<String> roles = List.of(user.getRole().getName().name());
+
+        String newAccessToken = jwtUtil.generateToken(user.getUsername(), roles, ACCESS_TOKEN_VALIDITY);
+
         return new AuthenticationResponse(newAccessToken, refreshToken);
     }
 
     @Transactional
     public void logout(String refreshToken) {
         refreshTokenRepository.deleteByToken(refreshToken);
+    }
+
+    @Transactional
+    public UserResponse promoteUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Optional<Role> roleOptional = roleRepository.findByName(RoleEnum.ADMIN);
+
+        if(roleOptional.isEmpty()){
+            throw new IllegalArgumentException("Role not found");
+        }
+
+        user.setRole(roleOptional.get());
+        User promotedUser = userRepository.save(user);
+
+        UserResponse userResponse = modelMapper.map(promotedUser, UserResponse.class);
+        return userResponse;
     }
 }

@@ -22,7 +22,7 @@ public abstract class AbstractEntity<T extends Serializable> {
 
     @Column(name = "is_active")
     @ColumnDefault("true")
-    private boolean isActive;
+    private boolean isActive=true;
 
     @Column(name = "created_at", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)

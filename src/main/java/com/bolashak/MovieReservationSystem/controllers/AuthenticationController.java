@@ -6,10 +6,13 @@ import com.bolashak.MovieReservationSystem.dto.UserResponse;
 import com.bolashak.MovieReservationSystem.entities.User;
 import com.bolashak.MovieReservationSystem.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -47,5 +50,13 @@ public class AuthenticationController {
     public ResponseEntity<?> logout(@RequestParam String refreshToken) {
         authenticationService.logout(refreshToken);
         return ResponseEntity.ok("Logout successful");
+    }
+
+    @PutMapping("/promote/{userId}")
+    @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
+    public ResponseEntity<?> promoteUser(@PathVariable Long userId) {
+        log.info("Promoting user with id: {}", userId);
+        UserResponse user = authenticationService.promoteUser(userId);
+        return ResponseEntity.ok(user);
     }
 }

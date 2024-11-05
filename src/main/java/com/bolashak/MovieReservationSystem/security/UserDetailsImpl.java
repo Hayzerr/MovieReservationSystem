@@ -2,6 +2,7 @@ package com.bolashak.MovieReservationSystem.security;
 
 import com.bolashak.MovieReservationSystem.entities.Role;
 import com.bolashak.MovieReservationSystem.entities.User;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
+@Slf4j
 public class UserDetailsImpl implements UserDetails {
 
     private String username;
@@ -60,13 +62,21 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public static UserDetailsImpl fromUserEntityToCustomUserDetails(User user) {
+        log.info("User: {}", user);
+        if (user.getRole() == null) {
+            throw new RuntimeException("User role cannot be null");
+        }
+
+        String roleName = "ROLE_" + user.getRole().getName();
+
         return new UserDetailsImpl(
                 user.getUsername(),
                 user.getPassword(),
                 user.isActive(),
-                Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName().name())),
+                Collections.singletonList(new SimpleGrantedAuthority(roleName)),
                 user.getRole()
         );
     }
+
 }
 

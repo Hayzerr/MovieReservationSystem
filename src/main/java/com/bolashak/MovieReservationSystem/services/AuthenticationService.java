@@ -10,4 +10,5 @@ public interface AuthenticationService {
     AuthenticationResponse refreshAccessToken(String refreshToken);
     AuthenticationResponse login(String username, String password);
     UserResponse register(RegisterRequest registerRequest);
+    UserResponse promoteUser(Long userId);
 }

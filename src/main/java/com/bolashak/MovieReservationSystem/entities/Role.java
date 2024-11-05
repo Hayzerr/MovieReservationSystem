@@ -1,8 +1,11 @@
 package com.bolashak.MovieReservationSystem.entities;
 
 import com.bolashak.MovieReservationSystem.entities.enums.RoleEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,4 +24,8 @@ public class Role{
 
     @Column(nullable = false)
     private String description;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
+    private List<User> users;
 }
