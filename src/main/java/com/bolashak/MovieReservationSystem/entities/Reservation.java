@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "movie")
+@Table(name = "reservation")
 public class Reservation extends AbstractEntity<Long>{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "showtime_id", referencedColumnName = "id", nullable = false)

@@ -1,12 +1,10 @@
-package com.bolashak.MovieReservationSystem.dto;
+package com.bolashak.MovieReservationSystem.dto.responses;
 
 import com.bolashak.MovieReservationSystem.entities.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

@@ -32,8 +32,8 @@ public class Movie extends AbstractEntity<Long>{
 
     private String rating;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "genre_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "genre_id", referencedColumnName = "id")
     private Genre genre;
 
     @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)

@@ -16,10 +16,13 @@ import java.util.List;
 @Table(name = "seat")
 public class Seat extends AbstractEntity<Long>{
 
-    @Column(nullable = false, name = "seat_number")
-    private Integer seatNumber;
+    @Column(nullable = false, name = "row")
+    private Integer row;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @Column(nullable = false, name = "number")
+    private Integer number;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hall_id", nullable = false)
     private Hall hall;
 

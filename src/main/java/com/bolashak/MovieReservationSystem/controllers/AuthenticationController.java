@@ -1,13 +1,11 @@
 package com.bolashak.MovieReservationSystem.controllers;
 
-import com.bolashak.MovieReservationSystem.dto.AuthenticationResponse;
-import com.bolashak.MovieReservationSystem.dto.RegisterRequest;
-import com.bolashak.MovieReservationSystem.dto.UserResponse;
-import com.bolashak.MovieReservationSystem.entities.User;
+import com.bolashak.MovieReservationSystem.dto.responses.AuthenticationResponse;
+import com.bolashak.MovieReservationSystem.dto.requests.RegisterRequest;
+import com.bolashak.MovieReservationSystem.dto.responses.UserResponse;
 import com.bolashak.MovieReservationSystem.services.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +51,7 @@ public class AuthenticationController {
     }
 
     @PutMapping("/promote/{userId}")
-    @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public ResponseEntity<?> promoteUser(@PathVariable Long userId) {
         log.info("Promoting user with id: {}", userId);
         UserResponse user = authenticationService.promoteUser(userId);

@@ -20,7 +20,7 @@ public class Hall extends AbstractEntity<Long>{
     @Column(nullable = false)
     private String roomNumber;
 
-    @OneToMany(mappedBy = "hall", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "hall", fetch = FetchType.EAGER, orphanRemoval = true)
     private List<Seat> seats;
 
     @OneToMany(mappedBy = "hall", fetch = FetchType.LAZY)

@@ -1,9 +1,8 @@
 package com.bolashak.MovieReservationSystem.services;
 
-import com.bolashak.MovieReservationSystem.dto.AuthenticationResponse;
-import com.bolashak.MovieReservationSystem.dto.RegisterRequest;
-import com.bolashak.MovieReservationSystem.dto.UserResponse;
-import com.bolashak.MovieReservationSystem.entities.User;
+import com.bolashak.MovieReservationSystem.dto.responses.AuthenticationResponse;
+import com.bolashak.MovieReservationSystem.dto.requests.RegisterRequest;
+import com.bolashak.MovieReservationSystem.dto.responses.UserResponse;
 
 public interface AuthenticationService {
     void logout(String refreshToken);

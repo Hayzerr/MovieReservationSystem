@@ -4,6 +4,7 @@ import com.bolashak.MovieReservationSystem.config.LocalDateTimeAttributeConverte
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import static com.bolashak.MovieReservationSystem.constants.ValueConstants.ZONE_
 
 @EqualsAndHashCode
 @Getter
+@Setter
 @MappedSuperclass
 public abstract class AbstractEntity<T extends Serializable> {
 
@@ -22,7 +24,11 @@ public abstract class AbstractEntity<T extends Serializable> {
 
     @Column(name = "is_active")
     @ColumnDefault("true")
-    private boolean isActive=true;
+    private boolean isActive = true;
+
+    @Column(name = "is_deleted")
+    @ColumnDefault("false")
+    private boolean isDeleted = false;
 
     @Column(name = "created_at", nullable = false)
     @Convert(converter = LocalDateTimeAttributeConverter.class)

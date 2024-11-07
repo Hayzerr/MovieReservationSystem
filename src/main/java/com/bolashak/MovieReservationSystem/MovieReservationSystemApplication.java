@@ -10,4 +10,6 @@ public class MovieReservationSystemApplication {
 		SpringApplication.run(MovieReservationSystemApplication.class, args);
 	}
 
+
+
 }

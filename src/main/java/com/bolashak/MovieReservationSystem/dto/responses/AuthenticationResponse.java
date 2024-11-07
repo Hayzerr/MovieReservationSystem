@@ -1,10 +1,9 @@
-package com.bolashak.MovieReservationSystem.dto;
+package com.bolashak.MovieReservationSystem.dto.responses;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationResponse {
